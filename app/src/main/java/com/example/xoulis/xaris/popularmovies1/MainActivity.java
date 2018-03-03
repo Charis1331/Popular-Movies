@@ -2,13 +2,18 @@ package com.example.xoulis.xaris.popularmovies1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +35,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener,
+        View.OnClickListener {
 
     @BindView(R.id.loadMoviesProgressBar)
     public ProgressBar progressBar;
@@ -38,12 +44,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     public View errorViews;
     private Button retryButton;
 
+    private RecyclerView recyclerView;
     private List<Movie> dataSource;
     private MoviesAdapter adapter;
 
     private boolean sortByPopularity = true;
 
-    public final static String API_KEY = "YOUR_API_KEY";
+    public final static String API_KEY = "YOUR_API_KEY_HERE";
+    private final String RECYCLER_STATE_KEY = "recycler_state_key";
 
     @Override
     public void onMovieClick(Movie movie) {
@@ -56,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         dataSource = new ArrayList<>();
 
         ButterKnife.bind(this);
@@ -64,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         retryButton.setOnClickListener(this);
 
         // RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.moviesRecyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView = findViewById(R.id.moviesRecyclerView);
+        setRecyclerViewLayout();
         recyclerView.setHasFixedSize(true);
         recyclerView.getItemAnimator().setChangeDuration(0);
 
@@ -78,6 +85,36 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             fetchData();
         } else {
             showOrHideErrorView(true);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(RECYCLER_STATE_KEY, recyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (savedInstanceState != null) {
+                    Parcelable parcelable = savedInstanceState.getParcelable(RECYCLER_STATE_KEY);
+                    recyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+                }
+            }
+        }, 300);
+
+
+    }
+
+    private void setRecyclerViewLayout() {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
     }
 
