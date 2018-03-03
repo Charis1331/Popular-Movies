@@ -90,9 +90,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         Call<MovieResponse> call;
         if (sortByPopularity) {
             sortByPopularity = false;
+            getSupportActionBar().setTitle(getString(R.string.popular_title));
             call = apiService.getPopularMovies(API_KEY);
         } else {
             sortByPopularity = true;
+            getSupportActionBar().setTitle(getString(R.string.top_rated_title));
             call = apiService.getTopRatedMovies(API_KEY);
         }
 
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         switch (item.getItemId()) {
             case R.id.filterMoviesResult:
                 fetchData();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         if (sortByPopularity) {
             item.setTitle(R.string.sort_by_popularity);
         } else {
+            getSupportActionBar().setTitle(getString(R.string.popular_title));
             item.setTitle(R.string.sort_by_rating);
         }
     }

@@ -4,6 +4,8 @@
     <!-- MainMenu -->
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="sort_by_rating">Sort by rating</string>
+    <string name="popular_title">Popular</string>
+    <string name="top_rated_title">Top Rated</string>
 
     <!--Error Views-->
     <string name="error_loading">Please check your internet connection and try again later!</string>
