@@ -1,34 +1,42 @@
 package com.example.xoulis.xaris.popularmovies1;
 
-import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.xoulis.xaris.popularmovies1.Model.Movie;
 import com.example.xoulis.xaris.popularmovies1.Model.MovieResponse;
 import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiClient;
 import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiInterface;
-import com.squareup.picasso.Picasso;
 
-import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener{
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener, View.OnClickListener {
 
-    private ProgressBar progressBar;
+    @BindView(R.id.loadMoviesProgressBar)
+    public ProgressBar progressBar;
+    @BindView(R.id.error_views_layout_include)
+    public View errorViews;
+    private Button retryButton;
 
     private List<Movie> dataSource;
     private MoviesAdapter adapter;
@@ -51,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
         dataSource = new ArrayList<>();
 
-        progressBar = findViewById(R.id.loadMoviesProgressBar);
+        ButterKnife.bind(this);
+        retryButton = errorViews.findViewById(R.id.errorLayoutRetryButton);
+        retryButton.setOnClickListener(this);
 
         // RecyclerView
         RecyclerView recyclerView = findViewById(R.id.moviesRecyclerView);
@@ -63,8 +73,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         adapter = new MoviesAdapter(dataSource, this, this);
         recyclerView.setAdapter(adapter);
 
-        // Get the movies
-        fetchData();
+        if (isNetworkAvailable()) {
+            // Get the movies
+            fetchData();
+        } else {
+            showOrHideErrorView(true);
+        }
     }
 
     private void fetchData() {
@@ -96,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 // Hide the progressBar
                 progressBar.setVisibility(View.GONE);
+                // Show error
+                showOrHideErrorView(true);
             }
         });
     }
@@ -129,6 +145,35 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             item.setTitle(R.string.sort_by_popularity);
         } else {
             item.setTitle(R.string.sort_by_rating);
+        }
+    }
+
+    private void showOrHideErrorView(boolean show) {
+        if (show) {
+            progressBar.setVisibility(View.GONE);
+            errorViews.setVisibility(View.VISIBLE);
+        } else {
+            errorViews.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == retryButton) {
+            if (isNetworkAvailable()) {
+                showOrHideErrorView(false);
+                fetchData();
+            } else {
+                String toastText = getString(R.string.error_toast);
+                Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

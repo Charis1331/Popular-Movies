@@ -15,9 +15,9 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:textAlignment="viewStart"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:textAlignment="viewStart"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:scrimAnimationDuration="500">
@@ -98,13 +98,17 @@
 
             <TextView
                 android:id="@+id/plotSynopisTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
-                android:text="TextView"
+                android:tooltipText="Textview"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/movieDetailsThumbnailImageView"
-                app:layout_constraintTop_toBottomOf="@+id/movieDetailsThumbnailImageView" />
+                app:layout_constraintTop_toBottomOf="@+id/movieDetailsThumbnailImageView"
+                app:layout_constraintWidth_default="wrap" />
         </android.support.constraint.ConstraintLayout>
 
 

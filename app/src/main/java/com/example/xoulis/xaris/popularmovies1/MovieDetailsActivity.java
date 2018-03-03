@@ -1,18 +1,15 @@
 package com.example.xoulis.xaris.popularmovies1;
 
-import android.content.Intent;
-import android.media.Image;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ViewDebug;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.xoulis.xaris.popularmovies1.Model.Movie;
 import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiClient;
-import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,14 +60,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Big poster image
         String imgUrl = HelperClass.buildMovieImgUrl(movie.getPosterPath(),
                 ApiClient.W500_POSTER_SIZE);
-        Picasso.with(this)
+        Glide.with(this)
                 .load(imgUrl)
                 .into(bigMoviePosterImageView);
 
         // Movie thumbnail
         imgUrl = HelperClass.buildMovieImgUrl(movie.getPosterPath(),
                 ApiClient.W185_POSTER_SIZE);
-        Picasso.with(this)
+        Glide.with(this)
                 .load(imgUrl)
                 .into(thumbnailImageView);
 

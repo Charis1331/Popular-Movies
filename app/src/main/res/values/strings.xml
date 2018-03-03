@@ -4,4 +4,9 @@
     <!-- MainMenu -->
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="sort_by_rating">Sort by rating</string>
+
+    <!--Error Views-->
+    <string name="error_loading">Please check your internet connection and try again later!</string>
+    <string name="retry_button">Retry</string>
+    <string name="error_toast">No connection found!</string>
 </resources>
