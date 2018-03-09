@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
     private boolean sortByPopularity = true;
 
-    public final static String API_KEY = "YOUR_API_KEY_HERE";
+    public final static String API_KEY = BuildConfig.API_KEY;
     private final String RECYCLER_STATE_KEY = "recycler_state_key";
 
     @Override
