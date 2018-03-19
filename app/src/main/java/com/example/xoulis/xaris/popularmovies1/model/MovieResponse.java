@@ -1,6 +1,5 @@
-package com.example.xoulis.xaris.popularmovies1.Model;
+package com.example.xoulis.xaris.popularmovies1.model;
 
-import com.example.xoulis.xaris.popularmovies1.Model.Movie;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

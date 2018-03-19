@@ -1,7 +1,7 @@
-package com.example.xoulis.xaris.popularmovies1.Retrofit;
+package com.example.xoulis.xaris.popularmovies1.retrofit;
 
 
-import com.example.xoulis.xaris.popularmovies1.Model.MovieResponse;
+import com.example.xoulis.xaris.popularmovies1.model.MovieResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

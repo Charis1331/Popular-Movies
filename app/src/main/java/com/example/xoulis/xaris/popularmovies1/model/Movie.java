@@ -1,4 +1,4 @@
-package com.example.xoulis.xaris.popularmovies1.Model;
+package com.example.xoulis.xaris.popularmovies1.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

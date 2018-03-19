@@ -1,12 +1,9 @@
 package com.example.xoulis.xaris.popularmovies1;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
@@ -16,12 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.ImageViewTarget;
-import com.bumptech.glide.request.target.ThumbnailImageViewTarget;
-import com.example.xoulis.xaris.popularmovies1.Model.Movie;
-import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiClient;
-import com.github.florent37.glidepalette.BitmapPalette;
+import com.example.xoulis.xaris.popularmovies1.model.Movie;
+import com.example.xoulis.xaris.popularmovies1.retrofit.ApiClient;
 import com.github.florent37.glidepalette.GlidePalette;
 
 import butterknife.BindView;

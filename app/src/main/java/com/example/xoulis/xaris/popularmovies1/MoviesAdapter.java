@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.xoulis.xaris.popularmovies1.Model.Movie;
-import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiClient;
+import com.example.xoulis.xaris.popularmovies1.model.Movie;
+import com.example.xoulis.xaris.popularmovies1.retrofit.ApiClient;
 
 import java.util.List;
 

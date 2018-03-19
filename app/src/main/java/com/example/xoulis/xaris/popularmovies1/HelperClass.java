@@ -2,7 +2,7 @@ package com.example.xoulis.xaris.popularmovies1;
 
 import android.net.Uri;
 
-import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiClient;
+import com.example.xoulis.xaris.popularmovies1.retrofit.ApiClient;
 
 public class HelperClass {
 

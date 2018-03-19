@@ -7,13 +7,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +18,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.xoulis.xaris.popularmovies1.Model.Movie;
-import com.example.xoulis.xaris.popularmovies1.Model.MovieResponse;
-import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiClient;
-import com.example.xoulis.xaris.popularmovies1.Retrofit.ApiInterface;
+import com.example.xoulis.xaris.popularmovies1.model.Movie;
+import com.example.xoulis.xaris.popularmovies1.model.MovieResponse;
+import com.example.xoulis.xaris.popularmovies1.retrofit.ApiClient;
+import com.example.xoulis.xaris.popularmovies1.retrofit.ApiInterface;
 
 import java.util.ArrayList;
 import java.util.List;

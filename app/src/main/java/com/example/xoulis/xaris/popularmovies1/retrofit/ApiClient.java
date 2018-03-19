@@ -1,4 +1,4 @@
-package com.example.xoulis.xaris.popularmovies1.Retrofit;
+package com.example.xoulis.xaris.popularmovies1.retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

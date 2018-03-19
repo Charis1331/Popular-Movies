@@ -30,6 +30,12 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/MovieDetailsTheme" />
 
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.FavoriteMoviesProvider"
+            android:exported="false"
+            android:syncable="true"/>
+
     </application>
 
 </manifest>
