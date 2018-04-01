@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Popular Movies1</string>
 
+    <string name="content_authority">com.example.xoulis.xaris.popularmovies1</string>
+
     <!-- MainMenu -->
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="sort_by_rating">Sort by rating</string>

@@ -58,7 +58,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:tooltipText="Textview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -117,11 +116,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/ratingStarImageView"
                 app:srcCompat="@drawable/ic_date" />
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/add_to_favorites_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_favorite_border_white_24dp"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ratingTextView"
+                app:rippleColor="@color/colorPrimaryDark" />
+
         </android.support.constraint.ConstraintLayout>
 
-
     </android.support.v4.widget.NestedScrollView>
-
-    <!--<include layout="@layout/content_main" />-->
 
 </android.support.design.widget.CoordinatorLayout>

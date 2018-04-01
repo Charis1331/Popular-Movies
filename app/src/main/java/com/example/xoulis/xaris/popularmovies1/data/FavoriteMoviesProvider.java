@@ -24,7 +24,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
         final String authority = FavoriteMoviesContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, FavoriteMovieEntry.TABLE_FAVORITES, FAVORITE_MOVIE);
-        matcher.addURI(authority, FavoriteMoviesContract.FavoriteMovieEntry.TABLE_FAVORITES + "/#", FAVORITE_MOVIE_WITH_ID);
+        matcher.addURI(authority, FavoriteMovieEntry.TABLE_FAVORITES + "/#", FAVORITE_MOVIE_WITH_ID);
         return matcher;
     }
 
@@ -37,7 +37,6 @@ public class FavoriteMoviesProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         final int match = uriMatcher.match(uri);
-
         switch (match) {
             case FAVORITE_MOVIE: {
                 return FavoriteMovieEntry.CONTENT_DIR_TYPE;
@@ -71,7 +70,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
                         FavoriteMovieEntry.TABLE_FAVORITES,
                         projection,
                         FavoriteMovieEntry._ID + " = ?",
-                        new String[] {String.valueOf(ContentUris.parseId(uri))},
+                        new String[]{String.valueOf(ContentUris.parseId(uri))},
                         null,
                         null,
                         sortOrder);
@@ -80,6 +79,8 @@ public class FavoriteMoviesProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
 
         }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
         return cursor;
     }
 
@@ -109,41 +110,32 @@ public class FavoriteMoviesProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int rowsDeleted;
+
+        final int match = uriMatcher.match(uri);
+        switch (match) {
+            case FAVORITE_MOVIE:
+                rowsDeleted = db.delete(FavoriteMovieEntry.TABLE_FAVORITES, s, strings);
+                break;
+            case FAVORITE_MOVIE_WITH_ID:
+                s = FavoriteMovieEntry._ID + "=?";
+                strings = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = db.delete(FavoriteMovieEntry.TABLE_FAVORITES, s, strings);
+                break;
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsDeleted;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
-        final SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int numUpdated;
-
-        if (contentValues == null){
-            throw new IllegalArgumentException("Cannot have null content values");
-        }
-
-        switch(uriMatcher.match(uri)){
-            case FAVORITE_MOVIE:{
-                numUpdated = db.update(FavoriteMovieEntry.TABLE_FAVORITES,
-                        contentValues,
-                        selection,
-                        selectionArgs);
-                break;
-            }
-            case FAVORITE_MOVIE_WITH_ID: {
-                numUpdated = db.update(FavoriteMovieEntry.TABLE_FAVORITES,
-                        contentValues,
-                        FavoriteMovieEntry._ID + " = ?",
-                        new String[] {String.valueOf(ContentUris.parseId(uri))});
-                break;
-            }
-            default:{
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-            }
-        }
-
-        if (numUpdated > 0){
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
-        return numUpdated;
+        return 0;
     }
 }

@@ -13,10 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--MainActivity-->
+        <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
-            android:label="@string/popular_title">
+            android:label="@string/popular_title"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,17 +25,19 @@
             </intent-filter>
         </activity>
 
-        <!--MovieDetailsActivity-->
+        <!-- MovieDetailsActivity -->
         <activity
             android:name=".MovieDetailsActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/MovieDetailsTheme" />
 
+        <activity android:name=".FavoriteMoviesActivity" />
+
         <provider
-            android:authorities="@string/content_authority"
             android:name=".data.FavoriteMoviesProvider"
+            android:authorities="@string/content_authority"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true" />
 
     </application>
 

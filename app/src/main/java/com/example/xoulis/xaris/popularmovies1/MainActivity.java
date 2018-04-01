@@ -1,16 +1,24 @@
 package com.example.xoulis.xaris.popularmovies1;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +26,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.xoulis.xaris.popularmovies1.data.FavoriteMoviesContract;
+import com.example.xoulis.xaris.popularmovies1.data.FavoriteMoviesDBHelper;
 import com.example.xoulis.xaris.popularmovies1.model.Movie;
 import com.example.xoulis.xaris.popularmovies1.model.MovieResponse;
 import com.example.xoulis.xaris.popularmovies1.retrofit.ApiClient;
@@ -33,7 +43,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener,
-        View.OnClickListener {
+        View.OnClickListener{
+
+    private static final int FAVORITE_MOVIE_LOADER = 0;
 
     @BindView(R.id.loadMoviesProgressBar)
     public ProgressBar progressBar;
@@ -44,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     private RecyclerView recyclerView;
     private List<Movie> dataSource;
     private MoviesAdapter adapter;
-
-    private boolean sortByPopularity = true;
 
     public final static String API_KEY = BuildConfig.API_KEY;
     private final String RECYCLER_STATE_KEY = "recycler_state_key";
@@ -79,9 +89,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
         if (isNetworkAvailable()) {
             // Get the movies
-            fetchData();
+            fetchData(0);
         } else {
-            showOrHideErrorView(true);
+            showErrorViews(true);
         }
     }
 
@@ -103,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
                 }
             }
         }, 300);
-
-
     }
 
     private void setRecyclerViewLayout() {
@@ -115,20 +123,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         }
     }
 
-    private void fetchData() {
+    private void fetchData(int sortMode) {
         // Show the progressBar
         progressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         Call<MovieResponse> call;
-        if (sortByPopularity) {
-            sortByPopularity = false;
-            getSupportActionBar().setTitle(getString(R.string.popular_title));
+        if (sortMode == 0) {
             call = apiService.getPopularMovies(API_KEY);
         } else {
-            sortByPopularity = true;
-            getSupportActionBar().setTitle(getString(R.string.top_rated_title));
             call = apiService.getTopRatedMovies(API_KEY);
         }
 
@@ -147,15 +151,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
                 // Hide the progressBar
                 progressBar.setVisibility(View.GONE);
                 // Show error
-                showOrHideErrorView(true);
+                showErrorViews(true);
             }
         });
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        changeMenuItemTitle(menu.getItem(0));
-        return true;
     }
 
     @Override
@@ -169,24 +167,23 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.filterMoviesResult:
-                fetchData();
-
+                int mode = 0;
+                if (item.getTitle().equals(R.string.sort_by_popularity)) {
+                    mode = 1;
+                    getSupportActionBar().setTitle(getString(R.string.top_rated_title));
+                    item.setTitle(R.string.sort_by_rating);
+                } else {
+                    getSupportActionBar().setTitle(getString(R.string.popular_title));
+                    item.setTitle(R.string.sort_by_popularity);
+                }
+                fetchData(mode);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void changeMenuItemTitle(MenuItem item) {
-        if (sortByPopularity) {
-            item.setTitle(R.string.sort_by_popularity);
-        } else {
-            getSupportActionBar().setTitle(getString(R.string.popular_title));
-            item.setTitle(R.string.sort_by_rating);
-        }
-    }
-
-    private void showOrHideErrorView(boolean show) {
+    private void showErrorViews(boolean show) {
         if (show) {
             progressBar.setVisibility(View.GONE);
             errorViews.setVisibility(View.VISIBLE);
@@ -206,8 +203,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     public void onClick(View view) {
         if (view == retryButton) {
             if (isNetworkAvailable()) {
-                showOrHideErrorView(false);
-                fetchData();
+                showErrorViews(false);
+                fetchData(0);
             } else {
                 String toastText = getString(R.string.error_toast);
                 Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
