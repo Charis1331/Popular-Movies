@@ -51,7 +51,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/plotSynopisTextView"
+                android:id="@+id/plotSynopsisTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -70,11 +70,11 @@
                 android:layout_width="115dp"
                 android:layout_height="165dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/plotSynopisTextView"
+                app:layout_constraintStart_toStartOf="@+id/plotSynopsisTextView"
+                app:layout_constraintTop_toBottomOf="@+id/plotSynopsisTextView"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
@@ -130,29 +130,69 @@
                 app:layout_constraintTop_toTopOf="@+id/ratingTextView"
                 app:rippleColor="@color/colorPrimaryDark" />
 
-            <view
-                android:id="@+id/top_trailer_section_divider"
+            <LinearLayout
+                android:id="@+id/trailers_layout"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintLeft_toLeftOf="@+id/plotSynopisTextView"
-                app:layout_constraintRight_toRightOf="@+id/plotSynopisTextView"
-                app:layout_constraintTop_toBottomOf="@+id/movieDetailsThumbnailImageView" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/trailers"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="@+id/top_trailer_section_divider"
-                app:layout_constraintTop_toBottomOf="@+id/top_trailer_section_divider" />
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="@+id/plotSynopsisTextView"
+                app:layout_constraintRight_toRightOf="@+id/plotSynopsisTextView"
+                app:layout_constraintTop_toBottomOf="@+id/movieDetailsThumbnailImageView">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/movie_trailer_recyclerView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/trailers"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/movie_trailer_recyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reviews_linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:gravity="fill_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="@+id/plotSynopsisTextView"
+                app:layout_constraintRight_toRightOf="@+id/plotSynopsisTextView"
+                app:layout_constraintTop_toBottomOf="@+id/trailers_layout">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/movie_review_author_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/movie_review_content_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="3" />
+
+            </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
 

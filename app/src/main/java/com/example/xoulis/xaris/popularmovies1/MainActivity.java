@@ -43,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener,
-        View.OnClickListener{
+        View.OnClickListener {
 
     private static final int FAVORITE_MOVIE_LOADER = 0;
 

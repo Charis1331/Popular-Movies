@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable{
 
+    @SerializedName("id")
+    private int id;
     @SerializedName("poster_path")
     private String posterPath;
     @SerializedName("original_title")
@@ -17,16 +19,18 @@ public class Movie implements Parcelable{
     private String rating;
     @SerializedName("release_date")
     private String releaseDate;
-    @SerializedName("video")
-    private boolean hasTrailers;
 
-    public Movie(String imgUrl, String title, String overview, String rating, String releaseDate, boolean hasTrailers) {
+    public Movie(int id, String imgUrl, String title, String overview, String rating, String releaseDate) {
+        this.id = id;
         this.posterPath = imgUrl;
         this.title = title;
         this.overview = overview;
         this.rating = rating;
         this.releaseDate = releaseDate;
-        this.hasTrailers = hasTrailers;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -49,29 +53,25 @@ public class Movie implements Parcelable{
         return releaseDate;
     }
 
-    public boolean isHasTrailers() {
-        return hasTrailers;
-    }
-
     /* ------------------------- PARCEABLE ------------------------- */
 
     protected Movie(Parcel in) {
+        id = in.readInt();
         posterPath = in.readString();
         title = in.readString();
         overview = in.readString();
         rating = in.readString();
         releaseDate = in.readString();
-        hasTrailers = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(posterPath);
         dest.writeString(title);
         dest.writeString(overview);
         dest.writeString(rating);
         dest.writeString(releaseDate);
-        dest.writeByte((byte) (hasTrailers ? 1 : 0));
     }
 
     @Override

@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName;
 public class Trailer {
     @SerializedName("name")
     private String name;
-    @SerializedName("site")
-    private String site;
+    @SerializedName("key")
+    private String youtubeKey;
 
-    public Trailer(String name, String site) {
+    public Trailer(String name, String youtubeKey) {
         this.name = name;
-        this.site = site;
+        this.youtubeKey = youtubeKey;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return name;
     }
 
-    public void setSite(String site) {
-        this.site = site;
+    public String getYoutubeKey() {
+        return youtubeKey;
     }
 }
