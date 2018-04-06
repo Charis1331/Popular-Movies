@@ -62,7 +62,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintWidth_default="spread"
                 tools:text="adsadadasdsada" />
 
             <ImageView
@@ -129,6 +129,30 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/ratingTextView"
                 app:rippleColor="@color/colorPrimaryDark" />
+
+            <view
+                android:id="@+id/top_trailer_section_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="@+id/plotSynopisTextView"
+                app:layout_constraintRight_toRightOf="@+id/plotSynopisTextView"
+                app:layout_constraintTop_toBottomOf="@+id/movieDetailsThumbnailImageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/trailers"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@+id/top_trailer_section_divider"
+                app:layout_constraintTop_toBottomOf="@+id/top_trailer_section_divider" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/movie_trailer_recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </android.support.constraint.ConstraintLayout>
 

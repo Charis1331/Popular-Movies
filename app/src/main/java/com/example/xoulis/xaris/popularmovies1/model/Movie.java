@@ -17,13 +17,16 @@ public class Movie implements Parcelable{
     private String rating;
     @SerializedName("release_date")
     private String releaseDate;
+    @SerializedName("video")
+    private boolean hasTrailers;
 
-    public Movie(String imgUrl, String title, String overview, String rating, String releaseDate) {
+    public Movie(String imgUrl, String title, String overview, String rating, String releaseDate, boolean hasTrailers) {
         this.posterPath = imgUrl;
         this.title = title;
         this.overview = overview;
         this.rating = rating;
         this.releaseDate = releaseDate;
+        this.hasTrailers = hasTrailers;
     }
 
     public String getTitle() {
@@ -46,6 +49,10 @@ public class Movie implements Parcelable{
         return releaseDate;
     }
 
+    public boolean isHasTrailers() {
+        return hasTrailers;
+    }
+
     /* ------------------------- PARCEABLE ------------------------- */
 
     protected Movie(Parcel in) {
@@ -54,6 +61,22 @@ public class Movie implements Parcelable{
         overview = in.readString();
         rating = in.readString();
         releaseDate = in.readString();
+        hasTrailers = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(posterPath);
+        dest.writeString(title);
+        dest.writeString(overview);
+        dest.writeString(rating);
+        dest.writeString(releaseDate);
+        dest.writeByte((byte) (hasTrailers ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -67,18 +90,4 @@ public class Movie implements Parcelable{
             return new Movie[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(posterPath);
-        parcel.writeString(title);
-        parcel.writeString(overview);
-        parcel.writeString(rating);
-        parcel.writeString(releaseDate);
-    }
 }

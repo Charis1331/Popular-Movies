@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Popular Movies1</string>
+    <string name="app_name">Pop Films</string>
 
-    <string name="content_authority">com.example.xoulis.xaris.popularmovies1</string>
+    <string name="content_authority" translatable="false">com.example.xoulis.xaris.popularmovies1</string>
 
     <!-- MainMenu -->
     <string name="sort_by_popularity">Sort by popularity</string>
@@ -13,4 +13,8 @@
     <string name="error_loading">Please check your internet connection and try again later!</string>
     <string name="retry_button">Retry</string>
     <string name="error_toast">No connection found!</string>
+
+    <!--Details Activity-->
+    <string name="trailers">Trailers</string>
+
 </resources>

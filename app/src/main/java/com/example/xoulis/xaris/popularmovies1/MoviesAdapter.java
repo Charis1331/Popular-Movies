@@ -1,6 +1,7 @@
 package com.example.xoulis.xaris.popularmovies1;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
     public MoviesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater
