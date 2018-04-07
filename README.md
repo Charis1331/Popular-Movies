@@ -1,8 +1,8 @@
 # Popular Movies, Final App 
 
-## Part of the Udacity Developer Nanodegree Program
+### Part of the Udacity Developer Nanodegree Program
 
-### Project Overview 
+## Project Overview 
 
 ### Part 1
 Most of us can relate to kicking back on the couch and enjoying a movie with friends and family. In this project, you’ll build an app to allow users to discover the most popular movies playing. We will split the development of this app in two stages. First, let's talk about **stage 1**.
