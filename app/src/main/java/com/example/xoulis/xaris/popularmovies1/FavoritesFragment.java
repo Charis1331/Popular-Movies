@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.xoulis.xaris.popularmovies1.data.FavoriteMoviesContract;
 import com.example.xoulis.xaris.popularmovies1.model.Movie;
@@ -33,6 +34,8 @@ import butterknife.ButterKnife;
 public class FavoritesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, FavoriteMoviesAdapter.FavoriteMovieClickListener {
 
     private final int CURSOR_LOADER_ID = 0;
+
+    private TextView noMoviesTextView;
 
     private FavoriteMoviesAdapter adapter;
     private RecyclerView favoriteMoviesRecyclerView;
@@ -76,6 +79,8 @@ public class FavoritesFragment extends Fragment implements LoaderManager.LoaderC
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // inflate fragment_main layout
         final View rootView = inflater.inflate(R.layout.favorites_fragment, container, false);
+
+        noMoviesTextView = rootView.findViewById(R.id.no_favorite_movies_textView);
 
         // RecyclerView adapter
         adapter = new FavoriteMoviesAdapter(getContext(), null, this);
@@ -126,7 +131,11 @@ public class FavoritesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
+        if (data == null || data.getCount() == 0) {
+            noMoviesTextView.setVisibility(View.VISIBLE);
+        } else {
+            adapter.swapCursor(data);
+        }
     }
 
     @Override

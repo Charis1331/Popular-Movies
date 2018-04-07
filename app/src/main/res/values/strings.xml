@@ -20,5 +20,6 @@
 
     <!--Favorites Fragment-->
     <string name="favorites_actionBar_title">Favorites</string>
+    <string name="no_favorites">You haven\'t added any movies to your library.</string>
 
 </resources>
