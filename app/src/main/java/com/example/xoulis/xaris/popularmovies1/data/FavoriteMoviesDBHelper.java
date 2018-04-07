@@ -18,8 +18,9 @@ public class FavoriteMoviesDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " +
                 FavoriteMovieEntry.TABLE_FAVORITES + "(" +
-                FavoriteMovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                FavoriteMovieEntry.COLUMN_POSTER + " INTEGER NOT NULL, " +
+                FavoriteMovieEntry._ID + " INTEGER PRIMARY KEY NOT NULL, " +
+                FavoriteMovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                FavoriteMovieEntry.COLUMN_POSTER + " TEXT NOT NULL, " +
                 FavoriteMovieEntry.COLUMN_SYNOPSIS + " TEXT NOT NULL, " +
                 FavoriteMovieEntry.COLUMN_RATING + " TEXT NOT NULL, " +
                 FavoriteMovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL);";

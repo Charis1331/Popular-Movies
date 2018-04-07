@@ -17,7 +17,8 @@ public class FavoriteMoviesContract {
 
         public static final String TABLE_FAVORITES = "favorites";
 
-        public static final String _ID = BaseColumns._ID;
+        public static final String _ID = "_id";
+        public static final String COLUMN_TITLE = "movie_title";
         public static final String COLUMN_POSTER = "poster";
         public static final String COLUMN_SYNOPSIS = "synopsis";
         public static final String COLUMN_RATING = "rating";

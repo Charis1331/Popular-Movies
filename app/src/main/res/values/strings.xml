@@ -8,6 +8,7 @@
     <string name="sort_by_rating">Sort by rating</string>
     <string name="popular_title">Popular</string>
     <string name="top_rated_title">Top Rated</string>
+    <string name="favorites">Favorites</string>
 
     <!--Error Views-->
     <string name="error_loading">Please check your internet connection and try again later!</string>
@@ -16,5 +17,8 @@
 
     <!--Details Activity-->
     <string name="trailers">Trailers</string>
+
+    <!--Favorites Fragment-->
+    <string name="favorites_actionBar_title">Favorites</string>
 
 </resources>

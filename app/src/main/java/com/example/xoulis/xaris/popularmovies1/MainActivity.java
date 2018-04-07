@@ -45,8 +45,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener,
         View.OnClickListener {
 
-    private static final int FAVORITE_MOVIE_LOADER = 0;
-
     @BindView(R.id.loadMoviesProgressBar)
     public ProgressBar progressBar;
     @BindView(R.id.error_views_layout_include)
@@ -162,25 +160,40 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.filterMoviesResult:
                 int mode = 0;
-                if (item.getTitle().equals(R.string.sort_by_popularity)) {
-                    mode = 1;
-                    getSupportActionBar().setTitle(getString(R.string.top_rated_title));
+                if (item.getTitle().toString().equals(getString(R.string.sort_by_popularity))) {
+                    getSupportActionBar().setTitle(getString(R.string.popular_title));
                     item.setTitle(R.string.sort_by_rating);
                 } else {
-                    getSupportActionBar().setTitle(getString(R.string.popular_title));
+                    mode = 1;
+                    getSupportActionBar().setTitle(getString(R.string.top_rated_title));
                     item.setTitle(R.string.sort_by_popularity);
                 }
                 fetchData(mode);
                 return true;
+            case R.id.favorite_movies_menu_item:
+                showFavoritesFragment();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showFavoritesFragment() {
+        FavoritesFragment fragment = new FavoritesFragment();
+        Bundle args = new Bundle();
+        args.putString("previousTitle", this.getSupportActionBar().getTitle().toString());
+        fragment.setArguments(args);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.favorites_fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void showErrorViews(boolean show) {

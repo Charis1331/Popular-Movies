@@ -3,6 +3,7 @@ package com.example.xoulis.xaris.popularmovies1;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -11,11 +12,13 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.app.LoaderManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,6 +40,7 @@ import com.example.xoulis.xaris.popularmovies1.retrofit.ApiInterface;
 import com.github.florent37.glidepalette.GlidePalette;
 
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +53,8 @@ import retrofit2.Response;
 import static android.content.Intent.ACTION_VIEW;
 import static com.example.xoulis.xaris.popularmovies1.MainActivity.API_KEY;
 
-public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>, TrailersAdapter.TrailerClickedListener {
+public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener,
+        LoaderManager.LoaderCallbacks<Cursor>, TrailersAdapter.TrailerClickedListener {
 
     private static final int FAVORITE_MOVIE_LOADER = 0;
     private final int TRAILERS_TO_SHOW_AT_MAX = 3;
@@ -269,21 +274,41 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if (view == favoritesFab) {
-            ContentValues cv = new ContentValues();
-            cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_POSTER, movie.getPosterPath());
-            cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_SYNOPSIS, movie.getOverview());
-            cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_RATING, movie.getRating());
-            cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-
-            Uri uri = this.getContentResolver().insert(FavoriteMoviesContract.FavoriteMovieEntry.CONTENT_URI,
-                    cv);
-
-            if (uri == null) {
-                Toast.makeText(this, "Movie couldn't be added to favorites!", Toast.LENGTH_SHORT).show();
+            if ((Integer) favoritesFab.getTag() == R.drawable.ic_favorite_border_white_24dp) {
+                Uri uri = addMovieToFavorites();
+                if (uri == null) {
+                    Toast.makeText(this, "Movie couldn't be added to favorites!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Movie saved to favorites.", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(this, "Movie saved.", Toast.LENGTH_SHORT).show();
+                int rowsDeleted = removeMovieFromFavorites();
+                if (rowsDeleted > 0) {
+                    Toast.makeText(this, "Movie removed from favorites.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Movie couldn't be removed from favorites!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
+    }
+
+    private Uri addMovieToFavorites() {
+        ContentValues cv = new ContentValues();
+        cv.put(FavoriteMoviesContract.FavoriteMovieEntry._ID, movie.getId());
+        cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_TITLE, movie.getTitle());
+        cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_POSTER, movie.getPosterPath());
+        cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_SYNOPSIS, movie.getOverview());
+        cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_RATING, movie.getRating());
+        cv.put(FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+
+        return this.getContentResolver().insert(FavoriteMoviesContract.FavoriteMovieEntry.CONTENT_URI,
+                cv);
+    }
+
+    private int removeMovieFromFavorites() {
+        String selection = FavoriteMoviesContract.FavoriteMovieEntry._ID + " = ?";
+        String[] selectionArgs = {String.valueOf(movie.getId())};
+        return this.getContentResolver().delete(FavoriteMoviesContract.FavoriteMovieEntry.CONTENT_URI, selection, selectionArgs);
     }
 
     @Override
@@ -293,8 +318,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                 FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_POSTER
         };
 
-        String selection = FavoriteMoviesContract.FavoriteMovieEntry.COLUMN_POSTER + " = ?";
-        String[] selectionArgs = {movie.getPosterPath()};
+        String selection = FavoriteMoviesContract.FavoriteMovieEntry._ID + " = ?";
+        String[] selectionArgs = {String.valueOf(movie.getId())};
 
         return new android.content.CursorLoader(this,
                 FavoriteMoviesContract.FavoriteMovieEntry.CONTENT_URI,
@@ -307,8 +332,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor cursor) {
+        // Movie hasn't been added to favorites, yet
         if (cursor == null || cursor.getCount() == 0) {
-            favoritesFab.setVisibility(View.VISIBLE);
+            favoritesFab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+            favoritesFab.setTag(R.drawable.ic_favorite_border_white_24dp);
+        } else {
+            favoritesFab.setImageResource(R.drawable.ic_favorite_white_24dp);
+            favoritesFab.setTag(R.drawable.ic_favorite_white_24dp);
         }
     }
 

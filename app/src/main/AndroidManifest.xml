@@ -31,8 +31,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/MovieDetailsTheme" />
 
-        <activity android:name=".FavoriteMoviesActivity" />
-
         <provider
             android:name=".data.FavoriteMoviesProvider"
             android:authorities="@string/content_authority"

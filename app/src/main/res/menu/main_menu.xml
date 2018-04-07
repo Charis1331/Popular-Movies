@@ -5,4 +5,10 @@
         android:id="@+id/filterMoviesResult"
         android:title="@string/sort_by_rating"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/favorite_movies_menu_item"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:title="@string/favorites"
+        app:showAsAction="ifRoom" />
 </menu>
